@@ -5,13 +5,15 @@ import { Calendar } from 'react-native-calendars';
 import moment from 'moment'; 
 
 const CalendarOnly = ({ navigation }) => {
+
+    const currentDate = moment().format('YYYY-MM-DD');
     const navigateToTodolistCreate = (dateString) => {
         navigation.navigate('TodolistCreate', { selectedDate: dateString });
     };
     return (
         <View style={styles.container}>
             <Calendar
-                current={'2024-07-01'}
+                current={currentDate}
                 monthFormat={'yyyy년 MM월'}
                 onDayPress={(day) => navigateToTodolistCreate(day.dateString)}
                 hideExtraDays={false}

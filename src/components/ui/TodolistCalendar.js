@@ -16,6 +16,7 @@ import Checkimg from '../../assets/images/check.svg'
 import { API_URL } from '@env';
 
 const TodolistCalendar = ({ navigation }) => {
+    const currentDate = moment().format('YYYY-MM-DD');
     const [todoList, setTodoList] = useState([]);
     const [showAll, setShowAll] = useState(false);
     const isFocused = useIsFocused();
@@ -186,7 +187,7 @@ const renderTodo = ({ item }) => {
                 <View style={styles.container}>
                     <CustomCalendar
                         style={styles.calendar}
-                        current={'2024-07-01'}
+                        current={currentDate}
                         monthFormat={'yyyy년 MM월'}
                         onDayPress={(day) => navigation.navigate('TodolistCreate', { selectedDate: day.dateString })}
                         markedDates={markedDates}
