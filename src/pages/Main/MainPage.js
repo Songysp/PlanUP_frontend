@@ -26,7 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import VirtualizedView from '../../utils/VirutalizedList';
 import Logo from '../../assets/images/logo.svg';
 import { API_URL } from '@env';
-
+import Clipboard from '@react-native-clipboard/clipboard';
 
 
 function MainPage() {

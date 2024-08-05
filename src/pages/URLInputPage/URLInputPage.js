@@ -16,7 +16,7 @@ import WorkNetMobileDetailsV2 from '../../components/ui/WorkNetMobileDetailsV2';
 import JobPlanetDetails from '../../components/ui/JobPlanetDetails';
 import WantedDetails from '../../components/ui/WantedDetails';
 import Home_icon  from '../../assets/images/home_icon.svg';
-
+import Clipboard from '@react-native-clipboard/clipboard';
 
 const URLInputPage = ({ navigation }) => {
     const [inputUrl, setInputUrl] = useState('');
@@ -80,7 +80,11 @@ const URLInputPage = ({ navigation }) => {
     };
 
 
-    const handleUrlSubmit = () => {
+    const handleUrlSubmit = async () => {
+        const url = await Clipboard.getString();
+        console.log(url);
+        setInputUrl(url);
+        setDisplayText(url.length > 36 ? url.substring(0, 36) + '..' : url);
         if (inputUrl) {
             submitUrl(inputUrl);
             navigation.navigate('JobDetailsPage', { url: inputUrl });
@@ -108,9 +112,9 @@ const URLInputPage = ({ navigation }) => {
                         onChangeText={handleTextChange}
                 
                     />
-                    {/* <TouchableOpacity style={styles.copy} onPress={handleUrlSubmit}>
+                    <TouchableOpacity style={styles.copy} onPress={handleUrlSubmit}>
                         <Copy width={24} height={24} />
-                    </TouchableOpacity> */}
+                    </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={styles.button} onPress={handleUrlSubmit}>
                     <Text style={styles.buttonText}>조회하기</Text>
