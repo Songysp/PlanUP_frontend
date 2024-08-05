@@ -70,7 +70,8 @@ const TodolistCreate = ({ route, navigation }) => {
         title: title,
         text: text,
         color: color,
-        examDate: selectedDate,
+        // examDate: selectedDate,
+        examDate: moment(selectedDate).locale('ko').format('YYYY-MM-DD'), // 날짜를 저장할 때 시간 제거
         type: '0',
       },{
         headers: {
@@ -100,7 +101,7 @@ const TodolistCreate = ({ route, navigation }) => {
 
   const handleSaveChecklistItem = () => {
     if (checklistItem.trim() !== '') {
-      const newChecklistItem = { date:moment(selectedDate).format('YYYY년 M월 D일'), color: color, text: checklistItem, completed: false };
+      const newChecklistItem = { date:moment(selectedDate).locale('ko').format('YYYY년 M월 D일'), color: color, text: checklistItem, completed: false };
       setChecklist([...checklist, newChecklistItem]);
       setChecklistItem('');
       setIsAddingChecklist(false);
@@ -161,7 +162,7 @@ const handleColorChange = (newColor) => {
 
 const handleSelectDate = (date) => {
   setSelectedDate(date);
-  setChecklist(checklist.map(item => ({ ...item, date: moment(date).format('YYYY년 M월 D일') })));
+  setChecklist(checklist.map(item => ({ ...item, date: moment(date).locale('ko').format('YYYY년 M월 D일') })));
 }
 
   markedDates[selectedDate] = { selected: true, selectedColor: '#06A4FD' };

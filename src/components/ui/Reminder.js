@@ -24,13 +24,13 @@ const Reminder = () => {
 
                 const sortedTodoList = response.data.map(item => ({
                     ...item, 
-                    daysLeft: moment(item.examDate).diff(moment(), 'days')
+                    daysLeft: moment.utc(item.examDate).diff(moment.utc().startOf('day'), 'days')
                 })).sort((a, b) => a.daysLeft - b.daysLeft);
 
                 if (sortedTodoList.length > 0) {
                     const nearestTodo = sortedTodoList[0];
-                    const nearestDate = moment(nearestTodo.examDate).format('YYYY-MM-DD');
-                    const sameDayTodos = sortedTodoList.filter(item => moment(item.examDate).format('YYYY-MM-DD') === nearestDate);
+                    const nearestDate = moment(nearestTodo.examDate).utc().format('YYYY-MM-DD');
+                    const sameDayTodos = sortedTodoList.filter(item => moment(item.examDate).utc().format('YYYY-MM-DD') === nearestDate);
                     
                     setNextTodo(nearestTodo);
                     setSameDayCount(sameDayTodos.length);
@@ -51,7 +51,7 @@ const Reminder = () => {
         );
     }
 
-    const examDate = moment(nextTodo.examDate).format('YYYY-MM-D');
+    const examDate = moment(nextTodo.examDate).utc().format('YYYY-MM-D');
     const daysLeft = nextTodo.daysLeft;
 
     return (

@@ -16,36 +16,11 @@ import Checkimg from '../../assets/images/check.svg'
 import { API_URL } from '@env';
 
 const TodolistCalendar = ({ navigation }) => {
-    const currentDate = moment().format('YYYY-MM-DD');
+    const currentDate = moment().utc().format('YYYY-MM-DD');
     const [todoList, setTodoList] = useState([]);
     const [showAll, setShowAll] = useState(false);
     const isFocused = useIsFocused();
     const [checklistCounts, setChecklistCounts] = useState({});
-
-    // useEffect(() => {
-    //     const fetchTodos = async () => {
-    //         const token = await AsyncStorage.getItem('token');
-    //         try {
-    //             const response = await axios.get('http://10.0.2.2:8080/list/userid', {
-    //                 headers: {
-    //                     Authorization: `Bearer ${token}`
-    //                 }
-    //             });
-    //             const sortedTodoList = response.data.map(item => ({
-    //                 ...item,
-    //                 daysLeft: moment(item.examDate).diff(moment(), 'days')
-    //             })).sort((a, b) => a.daysLeft - b.daysLeft);
-    //             setTodoList(sortedTodoList);
-    //         } catch (error) {
-    //             console.error(error);
-    //         }
-    //     };
-
-
-    //     fetchTodos();
-    // }, [isFocused]);
-
-    // ========================================================================
 
     useEffect(() => {
         const fetchTodos = async () => {
@@ -58,7 +33,7 @@ const TodolistCalendar = ({ navigation }) => {
                 });
                 const sortedTodoList = response.data.map(item => ({
                     ...item,
-                    daysLeft: moment(item.examDate).diff(moment(), 'days')
+                    daysLeft: moment(item.examDate).utc().diff(moment(), 'days')
                 })).sort((a, b) => a.daysLeft - b.daysLeft);
                 
                 // 디데이가 0보다 작은 항목을 삭제하는 코드 추가
@@ -80,7 +55,7 @@ const TodolistCalendar = ({ navigation }) => {
                 });
                 const refreshedTodoList = refreshedResponse.data.map(item => ({
                     ...item,
-                    daysLeft: moment(item.examDate).diff(moment(), 'days')
+                    daysLeft: moment.utc(item.examDate).diff(moment.utc().startOf('day'), 'days')
                 })).sort((a, b) => a.daysLeft - b.daysLeft);
 
                 setTodoList(refreshedTodoList);
@@ -96,7 +71,8 @@ const TodolistCalendar = ({ navigation }) => {
 
     const markedDates = {};
     todoList.forEach(item => {
-        const dateKey = moment(item.examDate).format('YYYY-MM-DD');
+        // const dateKey = moment(item.examDate).format('YYYY-MM-DD');
+        const dateKey = moment(item.examDate).utc().format('YYYY-MM-DD'); // 시간 정보 제거
         if (!markedDates[dateKey]) {
             markedDates[dateKey] = { dots: [] };
         }
@@ -147,7 +123,8 @@ useEffect(() => {
 }, [todoList]);
 
 const renderTodo = ({ item }) => {
-    const examDate = moment(item.examDate);
+    // const examDate = moment(item.examDate);
+    const examDate = moment(item.examDate).utc(); // 시간 정보 제거
     const formattedDate = examDate.format('YYYY년 M월 D일');
     const daysLeft = item.daysLeft;
     const type = item.type;
