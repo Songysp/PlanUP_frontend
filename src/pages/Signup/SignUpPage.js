@@ -98,9 +98,9 @@ function SignupPage() {
     
             if (response.status === 200) {
                 const req = await response.json();
-                setIsValidPassword(false)
-                setPasswordValidText("이미 사용중인 아이디입니다.");
-                setPasswordValidColor({ color: 'red' })
+                setIsValidId(false)
+                setIdValidText("이미 사용중인 아이디입니다.");
+                setIdValidColor({ color: 'red' })
                 Alert.alert('아이디 중복', '이미 사용중인 아이디입니다.');
                 return;
             } else if (response.status === 401) {
