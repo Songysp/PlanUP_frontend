@@ -1,4 +1,4 @@
- import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, ScrollView, FlatList, Image } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { Calendar } from 'react-native-calendars';
@@ -107,12 +107,15 @@ const CalendarPage = ({ route, navigation }) => {
         setSelectedTodo(todoId);
         await saveChecklistItems(todoId);
 
-        // 새로운 컬렉션에 채용 공고 저장
-        const jobPostResponse = await axios.post(`${API_URL}/jobPostings`, {
+         // 새로운 컬렉션에 채용 공고 저장
+         const jobPostResponse = await axios.post(`${API_URL}/jobPostings`, {
           title: eventTitle,
           company: jobDetails.회사명,
           deadline: eventDate,
-          userid: user.userid
+          userid: user.userid,
+          URL: jobDetails.URL, // 채용 공고 URL 추가
+          회사로고: jobDetails.회사로고, // 회사 로고 추가
+          todoId:todoId
         }, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -120,8 +123,8 @@ const CalendarPage = ({ route, navigation }) => {
         });
 
         if (jobPostResponse.status === 201) {
-          setJobPosts([...jobPosts, { title: eventTitle, company: jobDetails.회사명, deadline: eventDate }]);
-          setJobPostId(jobPostResponse.data._id)
+          setJobPosts([...jobPosts, { title: eventTitle, company: jobDetails.회사명, deadline: eventDate, URL: jobDetails.URL, 회사로고: jobDetails.회사로고,todoId:todoId }]); // URL과 로고 포함
+          setJobPostId(jobPostResponse.data._id);
         } else {
           Alert.alert('오류', '채용 공고 저장에 실패했습니다.');
         }
@@ -132,7 +135,7 @@ const CalendarPage = ({ route, navigation }) => {
         setIsButtonDisabled(false);
         setShowComponent(true);
         setShowExtraButtons(true);
-        
+
       } else {
         Alert.alert('오류', '일정 저장에 실패했습니다.');
         setIsButtonDisabled(false);

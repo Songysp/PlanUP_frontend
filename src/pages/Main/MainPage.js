@@ -27,15 +27,17 @@ import VirtualizedView from '../../utils/VirutalizedList';
 import Logo from '../../assets/images/logo.svg';
 import { API_URL } from '@env';
 import Clipboard from '@react-native-clipboard/clipboard';
-
+import moment from 'moment'; // moment 라이브러리 추가
 
 function MainPage() {
     const { user } = useAuth();
     const [isChecklist, setIsChecklist] = useState(false);
     const [isTodoList, setIsTodoList] = useState(false);
-    const [jobPostings, setJobPostings] = useState([]); // 채용 정보를 저장할 상태
+    const [sortedJobPostings, setSortedJobPostings] = useState([]); // 정렬된 채용 정보를 저장할 상태
     const isFocused = useIsFocused();
     const navigation = useNavigation();
+    const [showAllJobs, setShowAllJobs] = useState(false);
+    const [displayedJobs, setDisplayedJobs] = useState([]);
     const appState = useRef(AppState.currentState);
 
     useEffect(() => {
@@ -86,16 +88,32 @@ function MainPage() {
         };
 
         const fetchJobPostings = async () => {
-            const token = await AsyncStorage.getItem('token');
             try {
+                const token = await AsyncStorage.getItem('token');
+                if (!token) {
+                    throw new Error('인증 토큰이 없습니다.');
+                }
+
                 const response = await axios.get(`${API_URL}/jobPostings/${user.userid}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                setJobPostings(response.data); // 채용 정보 상태 업데이트
+
+                if (response.status === 200) {
+                    const currentDate = moment();
+                    const filteredAndSortedJobs = response.data
+                        .filter(job => moment(job.deadline).isAfter(currentDate))
+                        .sort((a, b) => moment(a.deadline).diff(moment(b.deadline)));
+                    setSortedJobPostings(filteredAndSortedJobs);
+                    setDisplayedJobs(filteredAndSortedJobs.slice(0, 5)); // 초기에 5개만 표시
+                    console.log('Fetched and sorted job postings:', filteredAndSortedJobs);
+                } else {
+                    throw new Error('채용 공고를 가져오는데 실패했습니다.');
+                }
             } catch (error) {
-                console.error(error);
+                console.error('Error fetching job postings:', error);
+                Alert.alert('오류', '채용 공고를 가져오는데 실패했습니다.');
             }
         };
 
@@ -103,6 +121,15 @@ function MainPage() {
         fetchTodos();
         fetchJobPostings();
     }, [isFocused]);
+
+    const toggleJobsDisplay = () => {
+        if (showAllJobs) {
+            setDisplayedJobs(sortedJobPostings.slice(0, 5));
+        } else {
+            setDisplayedJobs(sortedJobPostings);
+        }
+        setShowAllJobs(!showAllJobs);
+    };
 
     const {setIsLoggedIn, setUser } = useAuth();
     const handleLogout = (navigation, setIsLoggedIn, setUser) => {
@@ -142,9 +169,7 @@ function MainPage() {
                 style={{ marginRight: 10 }}>
                     <Text style={styles.logout}>로그아웃</Text>
                 </TouchableOpacity>
-                    {/* <Logo width={60} height={100} style={styles.logo} />
-                     */}
-                     <Image 
+                    <Image 
                         source={require('../../assets/images/logo_ani.gif')}  
                         style={{width: 80, height: 100, resizeMode: 'contain', marginBottom: 0, marginTop: 0, alignSelf: 'center'}}
                     />
@@ -166,25 +191,32 @@ function MainPage() {
                     )}
                     {isChecklist && <Checklist />}
 
-                    {/* 채용 정보 표시 */}
-                    <View style={styles.jobcontainer}>
-                        <Text style={styles.sectionTitle}>나의 취업공고</Text>
-                        {jobPostings.map((job) => (
-                            <View key={job._id} style={styles.jobPosting}>
-                                <Text style={styles.jobTitle}>{job.title}</Text>
-                                <Text style={styles.jobCompany}>{job.company}</Text>
-                                <Text style={styles.jobDeadline}>{job.deadline}</Text>
-                            </View>
-                        ))}
-                    </View>
+                      {/* 채용 정보 표시 */}
+<View style={styles.jobcontainer}>
+    <Text style={styles.sectionTitle}>나의 취업공고</Text>
+    {displayedJobs.map((job) => (
+        <View key={job._id} style={styles.jobPosting}>
+            <Text style={styles.jobTitle}>{job.title}</Text>
+            <Text style={styles.jobCompany}>{job.company}</Text>
+            <Text style={styles.jobDeadline}>마감: {moment(job.deadline).format('YYYY-MM-DD')}</Text>
+            <TouchableOpacity
+                style={styles.urlButton}
+                onPress={() => Linking.openURL(job.URL)}
+            >
+                <Text style={styles.urlButtonText}>공고 보기</Text>
+            </TouchableOpacity>
+        </View>
+    ))}
+    {sortedJobPostings.length > 5 && (
+        <TouchableOpacity onPress={toggleJobsDisplay} style={styles.toggleButton}>
+            <Text style={styles.toggleButtonText}>
+                {showAllJobs ? '접기' : '더보기'}
+            </Text>
+        </TouchableOpacity>
+    )}
+</View>
 
-                    {/* 새로운 컴포넌트로 이동하는 버튼 추가 */}
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => navigation.navigate('JobDetailsCard')}
-                    >
-                        <Text style={styles.buttonText}>채용 정보 보기</Text>
-                    </TouchableOpacity>
+                    
 
                      {/*AD*/}
                     <View style={styles.sliderContainer}>
@@ -242,6 +274,28 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 3,
     },
+    toggleButton: {
+        alignItems: 'center',
+        padding: 10,
+        marginTop: 10,
+    },
+    urlButton: {
+        backgroundColor: '#06A4FD',
+        padding: 8,
+        borderRadius: 5,
+        marginTop: 10,
+        alignItems: 'center',
+    },
+    urlButtonText: {
+        color: 'white',
+        fontSize: 14,
+        fontFamily: 'NanumSquareEB',
+    },
+    toggleButtonText: {
+        color: '#06A4FD',
+        fontSize: 16,
+        fontFamily: 'NanumSquareEB',
+    },
     jobcontainer: {
         marginTop: 20,
     },
@@ -295,16 +349,15 @@ const styles = StyleSheet.create({
         width: '100%',
         marginBottom: 30,
         marginTop: 30,
-        
     },
     slide: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1, // 테두리 너비 설정
-        borderColor: 'white', // 테두리 색상 설정 (여기서는 검정색)
-        borderRadius: 24, // 테두리 둥글게 설정
-        overflow: 'hidden', // 자식 요소가 테두리를 넘지 않도록 설정
+        borderWidth: 1,
+        borderColor: 'white',
+        borderRadius: 24,
+        overflow: 'hidden',
     },
     image: {
         width: '100%',
@@ -312,4 +365,5 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
 });
+
 export default MainPage;

@@ -33,7 +33,7 @@ const WantedDetails = ({ jobDetails }) => {
                     <Text style={styles.siteName}>원티드</Text>
                 </View>
                 <Text style={styles.title}>{jobDetails.직무}</Text>
-                <Image style={styles.logo} source={{ uri: jobDetails.로고 }} />
+                <Image style={styles.logo} source={{ uri: jobDetails.회사로고 }} />
                 <DetailRow label="회사이름" value={jobDetails.회사이름} />
                 <DetailRow label="지역" value={jobDetails.지역} />
                 <DetailRow label="경력" value={jobDetails.경력} />

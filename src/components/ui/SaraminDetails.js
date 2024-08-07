@@ -36,7 +36,7 @@ const SaraminDetails = ({ jobDetails }) => {
                 <View style={styles.headtitle}>   
                     <Text style={styles.title}>[ {jobDetails.회사명} ] {jobDetails.직무}</Text>
                 </View>
-                <Image style={styles.logo} source={{ uri: jobDetails.로고이미지 }} />
+                <Image style={styles.logo} source={{ uri: jobDetails.회사로고 }} />
                 <View style={styles.details}>
                     <DetailRow label="경력 조건" value={jobDetails.경력} />
                     <DetailRow label="학력" value={jobDetails.학력} />

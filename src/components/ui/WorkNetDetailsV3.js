@@ -33,7 +33,7 @@ const WorkNetDetailsV3 = ({ jobDetails }) => {
                     <Text style={styles.siteName}>워크넷</Text>
                 </View>
                 <Text style={styles.title}>{jobDetails.직무}</Text>
-                <Image style={styles.logo} source={{ uri: jobDetails.로고이미지 }} />
+                <Image style={styles.logo} source={{ uri: jobDetails.회사로고 }} />
                 <DetailRow label="모집직종" value={jobDetails.모집직종} />
                 <DetailRow label="경력" value={jobDetails.경력조건} />
                 <DetailRow label="학력" value={jobDetails.학력조건} />

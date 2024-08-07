@@ -10,7 +10,7 @@ const JobDetailsCard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.post('${API_URL}/scrape', {
+                const response = await axios.post('http://192.168.9.14:8000/scrape', {
                     url: '크롤링할 URL을 여기에 넣으세요'
                 });
                 setJobDetails(response.data);
