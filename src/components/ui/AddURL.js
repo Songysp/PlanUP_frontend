@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
     buttonText: {
         textAlign: 'center',
         color: '#fff',
-        fontSize: 24,
-        lineHeight: 30,
+        fontSize: 18,
+        lineHeight: 24,
     },
     logo: {
         marginRight: 4,

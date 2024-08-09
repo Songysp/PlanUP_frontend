@@ -169,10 +169,7 @@ function MainPage() {
                 style={{ marginRight: 10 }}>
                     <Text style={styles.logout}>로그아웃</Text>
                 </TouchableOpacity>
-                    <Image 
-                        source={require('../../assets/images/logo_ani.gif')}  
-                        style={{width: 80, height: 100, resizeMode: 'contain', marginBottom: 0, marginTop: 0, alignSelf: 'center'}}
-                    />
+                    <Logo style={styles.logo} width={60} height={80} />
                     <Text style={styles.title}>{user.name}님 안녕하세요!</Text>
                     <Text style={styles.welcome}>목표를 꼭 이루시길 바래요!</Text>
 

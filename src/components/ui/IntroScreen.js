@@ -13,10 +13,11 @@ function IntroScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Image 
+            {/* <Image 
                 source={require('../../assets/images/logo_ani.gif')}  
                 style={{width: 100, height: 100, resizeMode: 'contain', marginBottom: 0, marginTop: 0, alignSelf: 'center'}}
-                />
+                /> */}
+            <Logo style={styles.logo} width={100} height={100} />   
             <Text style={styles.App_name}>PLAN UP</Text>
            
         </View>
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     },
     logo: {
         marginBottom: 0,
+        alignSelf: 'center',
     },
     
 });
