@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoginInputBox from '../../components/ui/LoginInputBox';
 import { API_URL } from '@env';
+import Logo from '../../assets/images/logo.svg';
 
 function LoginPage({ navigation }) {
     const { setIsLoggedIn } = useAuth();
@@ -60,10 +61,11 @@ function LoginPage({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Image 
+            {/* <Image 
                         source={require('../../assets/images/logo_ani.gif')}  
                         style={{width: 80, height: 100, resizeMode: 'contain', marginBottom: 0, marginTop: -120, alignSelf: 'center'}}
-            />
+            /> */}
+            <Logo style={styles.logo} width={82} height={100} />
             <Text style={styles.app_name}>PLAN UP</Text>
             <Text style={styles.title}>로그인</Text>
             <LoginInputBox
@@ -112,6 +114,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    logo: {
+        alignSelf: 'center',
+        marginBottom: 4,
     },
     button: {
         paddingVertical: 6,

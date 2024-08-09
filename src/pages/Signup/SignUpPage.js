@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import LoginInputBox from '../../components/ui/LoginInputBox';
 import { validateId, validatePassword } from '../../utils/validateRegex';
 import { API_URL } from '@env';
+import Logo from '../../assets/images/logo.svg';
 
 function SignupPage() {
     const [userid, setUserid] = React.useState('');
@@ -119,10 +120,11 @@ function SignupPage() {
 
     return (
         <View style={styles.container}>
-            <Image 
+            {/* <Image 
                 source={require('../../assets/images/logo_ani.gif')}  
                 style={{width: 100, height: 100, resizeMode: 'contain', marginBottom: 0, marginTop: -60, alignSelf: 'center'}}
-                />
+                /> */}
+            <Logo style={styles.logo} width={82} height={100} />    
             <View style={styles.TextBox}>
                 <Text style={styles.title}>환영합니다!</Text>
                 <Text style={styles.smallText}>원하시는 꿈을 이루실 수 있도록 최선을</Text>
