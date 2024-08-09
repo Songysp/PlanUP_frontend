@@ -46,7 +46,7 @@ const JobDetailsPage = ({ route }) => {
     useEffect(() => {
         const fetchJobDetails = async () => {
             try {
-                const response = await axios.post(`http://192.168.9.14:8000/scrape`, { url });
+                const response = await axios.post(`${API_URL}/scrape`, { url });
                 if (response.data) {
                     setJobDetails(response.data);
                     if (url.includes('saramin')) {
