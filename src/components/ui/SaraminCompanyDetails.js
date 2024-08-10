@@ -12,7 +12,7 @@ const SaraminCompanyDetails = ({ jobDetails }) => {
         <View style={styles.container}>
             <View style={styles.card}>
                 <Text style={styles.sectionTitle}>기업정보</Text>
-                <Image style={styles.logo} source={{ uri: jobDetails.회사로고 }} />
+                <Image style={styles.logo} source={{ uri: jobDetails.로고이미지 }} />
                 <Text style={styles.title}>{jobDetails.추가_회사명}</Text>
                 <Text style={styles.build_date}>{jobDetails.설립일}</Text>
                 <DetailRow label="대표자명" value={jobDetails.대표자명} />

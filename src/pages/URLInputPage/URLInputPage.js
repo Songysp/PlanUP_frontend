@@ -42,43 +42,6 @@ const URLInputPage = ({ navigation }) => {
         navigation.navigate('MainPage');
     };
 
-    const submitUrl = async (url) => {
-        try {
-            const response = await axios.post(`${API_URL}/scrape`, { url });
-            setJobDetails(response.data);
-
-            if (url.includes('saramin')) {
-                setPlatform('saramin');
-            } else if (url.includes('work.go.kr')) {
-                if (url.includes('detail/retrivePriEmpDtlView.do')) {
-                    setPlatform('worknetV3');
-                } else if (url.includes('empInfoSrch/detail/empDetailAuthView.do')) {
-                    setPlatform('worknetV1');
-                } else if (url.includes('empInfoSrch/list/dhsOpenEmpInfoDetail2.do')) {
-                    setPlatform('worknetV2');
-                } else if (url.includes('regionJobsWorknet/jobDetailView2.do')) {
-                    if (url.includes('srchInfotypeNm=OEW')) {
-                        setPlatform('worknetMobileV1');
-                    } else if (url.includes('srchInfotypeNm=VALIDATION')) {
-                        setPlatform('worknetMobileV2');
-                    }
-                } else {
-                    console.error('지원되지 않는 Worknet URL입니다.');
-                }
-            } else if (url.includes('wanted')) {
-                setPlatform('wanted');
-            } else if (url.includes('jobkorea')) {
-                setPlatform('jobkorea');
-            } else if (url.includes('jobplanet')) {
-                setPlatform('jobplanet');
-            } else {
-                console.error('지원되지 않는 URL입니다.');
-            }
-        } catch (error) {
-            console.error('Error fetching job details:', error);
-        }
-    };
-
 
     const handleUrlSubmit = async () => {
         const url = await Clipboard.getString();
@@ -86,7 +49,6 @@ const URLInputPage = ({ navigation }) => {
         setInputUrl(url);
         setDisplayText(url.length > 36 ? url.substring(0, 36) + '..' : url);
         if (inputUrl) {
-            submitUrl(inputUrl);
             navigation.navigate('JobDetailsPage', { url: inputUrl });
         }
     };

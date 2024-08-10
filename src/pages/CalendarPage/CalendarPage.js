@@ -103,6 +103,7 @@ const CalendarPage = ({ route, navigation }) => {
 
       if (response.status === 201) {
         Alert.alert('성공', '일정이 저장되었습니다.');
+        console.log('일정 저장 성공: ', response.data);
         const todoId = response.data;
         setSelectedTodo(todoId);
         await saveChecklistItems(todoId);
@@ -118,6 +119,7 @@ const CalendarPage = ({ route, navigation }) => {
           todoId:todoId
         }, {
           headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
           }
         });
