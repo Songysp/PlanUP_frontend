@@ -434,11 +434,7 @@ const TodolistDetail = ({ route, navigation }) => {
                             )}
                         </View>
                     </View>
-                    <View style={styles.style1}>
-                        <TouchableOpacity onPress={handleGoToMainPage}>
-                            <Home_icon width={30} height={30} />
-                        </TouchableOpacity>
-                    </View>
+                    
                     {jobDetails && (
                         <View style={styles.jobDetailsContainer}>
                             <Text style={styles.jobDetailsTitle}>{jobDetails.title}</Text>
@@ -454,10 +450,15 @@ const TodolistDetail = ({ route, navigation }) => {
                                 style={styles.jobDetailsButton} 
                                 onPress={() => Linking.openURL(jobDetails.URL)}
                             >
-                                <Text style={styles.jobDetailsButtonText}>자세히 보기</Text>
+                                <Text style={styles.jobDetailsButtonText}>해당 공고 페이지로 이동하기</Text>
                             </TouchableOpacity>
                         </View>
                     )}
+                    <View style={styles.style1}>
+                        <TouchableOpacity onPress={handleGoToMainPage}>
+                            <Home_icon width={30} height={30} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </ScrollView>
             <Toast config={toastConfig} />
@@ -676,13 +677,13 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 4,
         elevation: 3,
-        marginTop: 20,
+        marginTop: 6,
         marginBottom: 20,
         marginHorizontal: 10,
     },
     jobDetailsTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 22,
+        fontFamily: 'NanumSquareEB',
         marginBottom: 10,
         color: '#333',
     },
@@ -693,18 +694,22 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     jobDetailsCompany: {
-        fontSize: 16,
+        fontSize: 18,
+        fontFamily: 'NanumSquareEB',
         color: '#666',
+        marginTop: -20,
     },
     jobDetailsDeadline: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#e74c3c',
-        marginBottom: 10,
+        fontFamily: 'NanumSquareEB',
+        marginBottom: 20,
+        marginTop: -20,
     },
     jobDetailsButton: {
-        backgroundColor: '#3498db',
+        backgroundColor: '#06A4FD',
         padding: 10,
-        borderRadius: 5,
+        borderRadius: 10,
         alignItems: 'center',
     },
     jobDetailsButtonText: {
@@ -713,9 +718,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     jobDetailsLogo: {
-        width: 50,
-        height: 50,
+        width: 80,
+        height: 80,
         resizeMode: 'contain',
+        marginRight: 30,
+        marginTop: -20,
     },
 });
 
