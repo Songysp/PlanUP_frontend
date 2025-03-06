@@ -103,6 +103,10 @@ pip install -r requirements.txt
 3. 앱 실행
 
   * 백엔드 서버 실행
+
+    
+[PlanUP BackEnd](https://github.com/Songysp/PlanUP_backend)
+
 ```bash
 npm start
 ```
